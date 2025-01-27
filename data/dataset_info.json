@@ -1,0 +1,10 @@
+{
+  "rag": {
+    "file_name": "processed_data.jsonl",
+    "load_from": "file",
+    "columns": {
+        "prompt": "instruction",
+        "response": "output"    
+      }
+  }
+}

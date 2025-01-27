@@ -1,0 +1,36 @@
+### model
+model_name_or_path: /AI-DATA/Models/Llama/Meta-Llama-3-8B-Instruct/
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z2_config.json
+flash_attn: fa2
+
+### dataset
+dataset: alpaca_gpt4_data_zh
+dataset_dir: data
+template: llama3
+cutoff_len: 8196
+max_samples: 100000
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+### output
+output_dir: saves/llama3-8b/full/sft
+logging_steps: 1
+save_steps: 100000
+plot_loss: true
+overwrite_output_dir: true
+include_tokens_per_second: true
+include_num_input_tokens_seen: true
+
+### train
+per_device_train_batch_size: 24
+gradient_accumulation_steps: 64
+learning_rate: 1.0e-05
+num_train_epochs: 1.0
+lr_scheduler_type: cosine
+bf16: true
+ddp_timeout: 180000000

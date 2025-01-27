@@ -1,0 +1,19 @@
+
+
+1. 进入工程目录：
+cd /workspace/llama-factory/
+
+2. 设置环境变量：
+source env.sh
+bash perf.sh performance
+
+参考进行kernel select http://sw-wiki/bin/view/PDE/AI/Training/Dragonfly/kernel%20select%E7%9A%84%E6%AD%A5%E9%AA%A4/
+
+3. 修改脚本：
+cd /workspace/llama-factory/examples/train_full/
+
+打开运行llama3_full_sft_ds2.yaml 文件脚本中指定实际的模型路径model_name_or_path和保存模型的输出路径out_dir; 数据集路径data_dir；
+	 
+4. 运行脚本
+  bash sft_llama3-8b_8gpu.sh
+	 

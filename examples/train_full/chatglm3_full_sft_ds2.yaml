@@ -1,0 +1,46 @@
+### model
+model_name_or_path: /workspace/chatglm3-6b-32k/
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+# lora_alpha: 16
+# lora_dropout: 0
+# lora_rank: 8
+# lora_target: all
+deepspeed: examples/deepspeed/ds_z2_config.json
+
+### dataset
+dataset: alpaca_zh_demo
+dataset_dir: data
+template: chatglm3
+cutoff_len: 1024
+max_samples: 100000
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+### output
+output_dir: saves/chatglm3-6B/full_8/Z2_20_batchsize24
+logging_steps: 1
+save_steps: 100000
+plot_loss: true
+overwrite_output_dir: true
+
+### train
+per_device_train_batch_size: 24
+gradient_accumulation_steps: 32
+learning_rate: 1.0e-05
+num_train_epochs: 20.0
+lr_scheduler_type: cosine
+# warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 180000000
+#flash_attn: auto
+include_num_input_tokens_seen: true
+include_tokens_per_second: true
+#max_grad_norm: 1.0
+#optim: adamw_torch
+#packing: false
+#report_to: none
+#warmup_steps: 0

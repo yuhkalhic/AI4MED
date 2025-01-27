@@ -1,0 +1,18 @@
+
+
+1. 进入工程目录：
+cd /workspace/llama-factory/
+
+2. 设置环境变量：
+source env.sh
+bash perf.sh performance
+
+
+3. 修改脚本：
+cd /workspace/llama-factory/examples/train_lora/
+
+打开运行baichuan2-13b.yaml文件脚本中指定实际的模型路径model_name_or_path和保存模型的输出路径out_dir; 数据集路径data_dir；
+	 
+4. 运行脚本
+  bash lora_baichuan2-13b_8gpu.sh
+	 
