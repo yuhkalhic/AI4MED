@@ -35,7 +35,7 @@ python read.py
 
 ```
 {
-    "instruction": "文本块1+文本块2+文本块3+文本块4+问题文本",
+    "instruction": "preamble+文本块1+文本块2+文本块3+文本块4+问题文本",
     "output": "标准答案",
     "golden": true
 }
