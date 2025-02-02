@@ -24,7 +24,6 @@ AI4MED/               # 在LLaMA-Factory框架的基础上构建
 
 ```
 python getdata.py --datasets all_train all_dev --p 0.8 --num_distract 3
-python getdata.py --datasets all_test --p 1.0 --num_distract 0 --output_path test.jsonl
 ```
 
 可以通过下面这个方式查看处理后的数据集的情况
@@ -71,6 +70,6 @@ CUDA_VISIBLE_DEVICES=0 python run.py --system reader --dataset all_test --llm_na
 - 评估代码
 
 ```
-python eval.py alog/system=reader,dataset=all_test*
+python eval.py alog/system=reader,dataset=all_test,llm_name=/home/hdd/model/Qwen2.5-7B,plan_name=system=planner_addret,dataset=all_test,debug=False,debug=False
 ```# AI4MED
 # AI4MED
