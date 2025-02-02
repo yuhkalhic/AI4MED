@@ -19,6 +19,15 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(message)s'
 )
 
+template = """You are a professional medical expert to answer the # Question. Please first using the # Retrieved Documents and then answer the question. Your responses will be used for research purposes only, so please have a definite and direct answer.
+You should respond in the format <answer>A/B/C/D</answer> (only one option can be chosen) at your response.
+
+# Retrieved Documents
+{documents}
+
+# Question
+{question}"""
+
 class DocumentProcessor:
     def __init__(self, model_name: str = "BAAI/llm-embedder", p: float = 0.8, num_distract: int = 3):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -43,7 +52,7 @@ class DocumentProcessor:
                 if current_source and lines:
                     blocks.append({
                         "source": current_source,
-                        "content": '\n'.join(lines) + '\n'
+                        "content": '\n'.join(lines)
                     })
                     lines = []
                 current_source = line
@@ -54,7 +63,7 @@ class DocumentProcessor:
         if current_source and lines:
             blocks.append({
                 "source": current_source,
-                "content": '\n'.join(lines) + '\n'
+                "content": '\n'.join(lines)
             })
             
         return blocks
@@ -125,7 +134,7 @@ class DocumentProcessor:
             if not blocks:
                 logging.warning("No document blocks found")
                 return {
-                    "instruction": question,
+                    "instruction": "",
                     "output": "",
                     "golden": False
                 }
@@ -134,26 +143,22 @@ class DocumentProcessor:
             is_golden = random.random() < self.p
             
             if is_golden:
-                # Mix positive and negative blocks
-                num_pos = 1
-                num_neg = self.num_distract
-                selected_blocks = (
-                    positive_blocks[:num_pos] + 
-                    negative_blocks[:num_neg]
-                )
+                selected_blocks = positive_blocks[:1] + negative_blocks[:self.num_distract]
             else:
-                # Use only negative blocks
                 selected_blocks = negative_blocks[:self.num_distract + 1]
             
-            # Shuffle the blocks
             random.shuffle(selected_blocks)
             
-            # Combine blocks with question
-            instruction = " ".join(selected_blocks) + " " + question
             
+            documents_str = '\n'.join(selected_blocks)
+            instruction = template.format(
+                documents=documents_str,
+                question=question
+            )
+
             return {
                 "instruction": instruction,
-                "output": "",  # To be filled with gold answer
+                "output": "",
                 "golden": is_golden
             }
             
@@ -212,7 +217,7 @@ def main():
             
             question = item.get("question", "")
             processed_item = processor.process_example(content, question)
-            processed_item["output"] = item.get("gold", "")
+            processed_item["output"] = f"<answer>{item.get('gold', '')}</answer>"
             
             processed_data.append(processed_item)
             
