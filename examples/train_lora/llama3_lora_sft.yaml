@@ -1,5 +1,7 @@
 ### model
-model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+# model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+#model_name_or_path: /mnt/public/code/wangzr/yjy/Meta-Llama-3.1-8B-Instruct/
+model_name_or_path: /mnt/public/code/wangzr/yjy/Qwen2.5-7B-Instruct
 
 ### method
 stage: sft
@@ -8,32 +10,38 @@ finetuning_type: lora
 lora_target: all
 
 ### dataset
-dataset: identity,alpaca_en_demo
-template: llama3
-cutoff_len: 1024
-max_samples: 1000
+dataset: rag
+template: qwen
+cutoff_len: 15000
 overwrite_cache: true
 preprocessing_num_workers: 16
 
 ### output
-output_dir: saves/llama3-8b/lora/sft
-logging_steps: 10
-save_steps: 500
+output_dir: saves/qwen/lora/sft
+logging_steps: 1
+save_steps: 41
 plot_loss: true
 overwrite_output_dir: true
 
 ### train
 per_device_train_batch_size: 1
-gradient_accumulation_steps: 8
+gradient_accumulation_steps: 64
 learning_rate: 1.0e-4
-num_train_epochs: 3.0
+num_train_epochs: 8.0
 lr_scheduler_type: cosine
 warmup_ratio: 0.1
 bf16: true
 ddp_timeout: 180000000
 
 ### eval
-val_size: 0.1
+val_size: 0.2
 per_device_eval_batch_size: 1
-eval_strategy: steps
-eval_steps: 500
+evaluation_strategy: steps   
+eval_steps: 41
+load_best_model_at_end: true
+save_strategy: steps         
+metric_for_best_model: loss   
+greater_is_better: false  
+
+
+# adapter_name_or_path
